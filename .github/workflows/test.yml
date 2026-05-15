@@ -29,19 +29,21 @@ jobs:
         run: |
           python -m pip install -e ".[dev]"
 
-      - name: Run unittests
+      - name: Run tests
         run: |
-          python -m unittest discover -v tests
+          python -m pytest -q
 
       - name: Smoke-test CLI
         run: |
           mdr-techfile --version
           mdr-techfile --help
-          mdr-techfile manifest > /tmp/manifest.json
+          mdr-techfile validate --spec examples/quickstart/device-spec.yaml
+          mdr-techfile manifest --spec examples/quickstart/device-spec.yaml --out /tmp/manifest.json
           python -c "import json; json.load(open('/tmp/manifest.json'))"
-          mdr-techfile validate --spec tests/fixtures/sample_device.yaml
-          mdr-techfile scaffold --spec tests/fixtures/sample_device.yaml --output /tmp/techfile
+          mdr-techfile scaffold --spec examples/quickstart/device-spec.yaml --out /tmp/techfile
           test -d /tmp/techfile
-          test "$(ls /tmp/techfile/*.md | wc -l)" -ge 13
-          test -f /tmp/techfile/manifest.json
-          python -c "import json; json.load(open('/tmp/techfile/manifest.json'))"
+          test -f /tmp/techfile/annex-II.md
+          test -f /tmp/techfile/annex-III.md
+          test -f /tmp/techfile/checklist.md
+          test -f /tmp/techfile/standards-matrix.md
+          test -f /tmp/techfile/audit.sha256
