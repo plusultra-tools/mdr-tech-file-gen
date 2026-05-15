@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mdr-tech-file-gen"
+version = "0.1.0"
+description = "YAML device spec to CE-MDR Annex II/III technical file skeleton in one command. Pure Python; MIT."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "plusUltra operator" }]
+keywords = ["mdr", "medical-device", "ce-marking", "regulatory", "samd", "iso-14971", "iec-62304", "iec-62366", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Legal Industry",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "pydantic>=2.0",
+    "jinja2>=3.1",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pytest-cov>=4", "build", "twine", "ruff>=0.4", "mypy>=1.10"]
+
+[project.urls]
+Homepage = "https://github.com/plusultra/mdr-tech-file-gen"
+Issues = "https://github.com/plusultra/mdr-tech-file-gen/issues"
+
+[project.scripts]
+mdr-techfile = "mdr_techfile.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+mdr_techfile = ["templates/*.md.j2", "data/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+ignore = []
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true

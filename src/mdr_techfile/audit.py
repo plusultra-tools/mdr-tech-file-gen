@@ -1,0 +1,72 @@
+"""Audit chain module.
+
+Produces ``audit.sha256`` — a line-separated hash manifest of every generated
+output file. Pattern mirrors the audit chain used in other plusUltra tools.
+"""
+from __future__ import annotations
+
+import hashlib
+from pathlib import Path
+
+AUDIT_FILENAME = "audit.sha256"
+
+
+def sha256_file(path: Path) -> str:
+    """Return the SHA-256 hex digest of a file's content.
+
+    Args:
+        path: Path to the file to hash.
+
+    Returns:
+        Lowercase hex-encoded SHA-256 digest.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+    """
+    if not path.exists():
+        raise FileNotFoundError(f"File not found for hashing: {path}")
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    return digest
+
+
+def sha256_text(text: str) -> str:
+    """Return the SHA-256 hex digest of a UTF-8 encoded string.
+
+    Args:
+        text: The string to hash.
+
+    Returns:
+        Lowercase hex-encoded SHA-256 digest.
+    """
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def write_audit_chain(output_dir: Path, file_paths: list[Path]) -> Path:
+    """Write ``audit.sha256`` containing one ``<hash>  <filename>`` line per file.
+
+    Lines are written in the order provided. File names in the manifest are
+    relative to ``output_dir`` to make the manifest portable.
+
+    Args:
+        output_dir: Directory where ``audit.sha256`` will be written and where
+            relative paths are computed from.
+        file_paths: Ordered list of files to hash.
+
+    Returns:
+        Path to the written ``audit.sha256`` file.
+
+    Raises:
+        FileNotFoundError: If any path in *file_paths* does not exist.
+    """
+    lines: list[str] = []
+    for fp in file_paths:
+        digest = sha256_file(fp)
+        try:
+            rel = fp.relative_to(output_dir)
+        except ValueError:
+            rel = fp  # fall back to absolute if outside output_dir
+        lines.append(f"{digest}  {rel}")
+    audit_text = "\n".join(lines) + "\n"
+    audit_path = output_dir / AUDIT_FILENAME
+    audit_path.write_text(audit_text, encoding="utf-8")
+    return audit_path

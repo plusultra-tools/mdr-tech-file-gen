@@ -1,0 +1,352 @@
+{#
+  annex-II.md.j2 — Jinja2 template for MDR Annex II Technical Documentation.
+
+  Variables injected by annex2.py:
+    spec       — DeviceSpec instance
+    pointers   — list[SectionPointers] (filtered for this device)
+    generated_at — ISO datetime string
+    tool_version — str
+
+  This template produces ONLY structural scaffolding, pointers to standards,
+  and TODO placeholders. It does NOT reproduce verbatim ISO/IEC text.
+  MDR Article/Annex citations are from Regulation (EU) 2017/745 (OJ L 117, 5.5.2017).
+#}
+# Technical Documentation — Annex II
+## {{ spec.name }} (Class {{ spec.risk_class.value }})
+
+**Device ID:** {{ spec.id }}
+**Manufacturer:** {{ spec.manufacturer }}
+**Version:** {{ spec.version }}
+**Generated:** {{ generated_at }} by mdr-tech-file-gen v{{ tool_version }}
+
+> **Disclaimer:** This document is a generated skeleton. All `[TODO]` placeholders
+> must be completed by a qualified regulatory professional before submission to a
+> Notified Body or Competent Authority. This tool does not constitute regulatory advice.
+>
+> **MDR reference:** Regulation (EU) 2017/745, Annex II — Technical Documentation
+> (OJ L 117, 5.5.2017). Full text at: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745
+
+---
+
+## §1 Device Description and Specification
+
+### §1.1 Device description and specification (MDR Annex II §1.1)
+
+| Field | Value |
+| --- | --- |
+| Device Name | {{ spec.name }} |
+| Device ID | {{ spec.id }} |
+| Version | {{ spec.version }} |
+| Manufacturer | {{ spec.manufacturer }} |
+| Risk Class | Class {{ spec.risk_class.value }} (MDR Annex VIII) |
+| Classification Rule(s) | {{ spec.classification_rules_applied | join(', ') }} |
+| Software Device (MDSW) | {{ 'Yes' if spec.software else 'No' }} |
+{% if spec.udi_di %}| UDI-DI | {{ spec.udi_di }} |{% endif %}
+{% if spec.basic_udi_di %}| Basic UDI-DI | {{ spec.basic_udi_di }} |{% endif %}
+{% if spec.eudamed_registration_id %}| EUDAMED SRN | {{ spec.eudamed_registration_id }} |{% endif %}
+
+#### Intended Use
+
+{{ spec.intended_use }}
+
+#### Intended Users
+
+{% for user in spec.intended_users %}- {{ user }}
+{% endfor %}
+
+#### Intended Environments
+
+{% for env in spec.intended_environments %}- {{ env }}
+{% endfor %}
+
+{% if spec.contraindications %}
+#### Contraindications
+
+{% for c in spec.contraindications %}- {{ c }}
+{% endfor %}
+{% else %}
+#### Contraindications
+
+[TODO: List all contraindications, or state "None identified" with supporting rationale.]
+
+{% endif %}
+
+**Standards pointers for §1.1:**
+{% for sec in pointers if sec.section == "Annex II §1.1" %}{% for p in sec.pointers %}
+- **{{ p.standard_id }} {{ p.clause }}** — {{ p.topic }}{% if p.note %} *({{ p.note }})*{% endif %}
+{% endfor %}{% endfor %}
+
+---
+
+### §1.2 Reference to previous and similar generations (MDR Annex II §1.2)
+
+[TODO: List previous versions of this device and similar devices on the market. For each,
+provide: device name, manufacturer, version, key technical differences, and reference to
+comparative technical data. If this is a first-in-class device, state that explicitly and
+provide market landscape data.]
+
+**Standards pointers for §1.2:**
+{% for sec in pointers if sec.section == "Annex II §1.2" %}{% for p in sec.pointers %}
+- **{{ p.standard_id }} {{ p.clause }}** — {{ p.topic }}{% if p.note %} *({{ p.note }})*{% endif %}
+{% endfor %}{% endfor %}
+
+---
+
+## §2 Information to be Supplied by the Manufacturer (MDR Annex II §2)
+
+### §2.1 Labelling
+
+[TODO: Attach labelling sample(s) and confirm compliance with MDR Art. 10(11) and Annex I §23.
+Symbols must comply with ISO 15223-1:2021.]
+
+### §2.2 Instructions for Use (IFU)
+
+[TODO: Attach the IFU draft and confirm it covers:
+- Device identification and description
+- Intended purpose and indications for use
+- Contraindications: {% if spec.contraindications %}see §1.1{% else %}[to be defined]{% endif %}
+- Warnings and precautions
+- Description of side effects and undesirable effects
+- User instructions and step-by-step operating procedure
+- Information regarding the safe disposal of the device and its packaging
+- Date of issue or latest revision of the IFU]
+
+### §2.3 UDI Assignment
+
+{% if spec.udi_di or spec.basic_udi_di %}
+- **UDI-DI:** {{ spec.udi_di or '[not yet assigned]' }}
+- **Basic UDI-DI:** {{ spec.basic_udi_di or '[not yet assigned]' }}
+- **EUDAMED SRN:** {{ spec.eudamed_registration_id or '[not yet assigned]' }}
+{% else %}
+[TODO: Assign UDI-DI and Basic UDI-DI via your UDI issuing entity. Register in EUDAMED
+before placing the device on the market. Reference: MDR Art. 27 and MDR Annex VI Part C.]
+{% endif %}
+
+**Standards pointers for §2:**
+{% for sec in pointers if sec.section == "Annex II §2" %}{% for p in sec.pointers %}
+- **{{ p.standard_id }} {{ p.clause }}** — {{ p.topic }}{% if p.note %} *({{ p.note }})*{% endif %}
+{% endfor %}{% endfor %}
+
+---
+
+## §3 Design and Manufacturing Information (MDR Annex II §3)
+
+### §3.1 Design Overview
+
+[TODO: Provide a summary of the design, including:
+- System architecture (block diagram or description)
+- Key design decisions and rationale
+- Functional description of all major components
+- Interface descriptions (hardware, software, user interfaces)]
+
+{% if spec.software %}
+### §3.2 Software Architecture (IEC 62304)
+
+**IEC 62304 Software Safety Class:** {{ spec.lifecycle.iec62304_safety_class.value if spec.lifecycle else '[TODO: assign]' }}
+
+[TODO: Attach or reference:
+- Software development plan (IEC 62304:2006+A1:2015 §5.1)
+- Software architecture document (IEC 62304:2006+A1:2015 §5.3)
+- Software configuration management plan (IEC 62304:2006+A1:2015 §8)]
+
+{% if spec.lifecycle and spec.lifecycle.version_control_system %}
+**Version Control System:** {{ spec.lifecycle.version_control_system }}
+{% endif %}
+{% if spec.lifecycle and spec.lifecycle.change_control_sop %}
+**Change Control SOP:** {{ spec.lifecycle.change_control_sop }}
+{% endif %}
+
+{% if spec.soup_register %}
+### §3.3 SOUP Register (IEC 62304:2006+A1:2015 §8.1.2)
+
+| Component | Version | Purpose | Anomaly List Reviewed |
+| --- | --- | --- | --- |
+{% for s in spec.soup_register %}| {{ s.name }} | {{ s.version }} | {{ s.purpose }} | {{ 'Yes' if s.anomaly_list_reviewed else 'No — TODO' }} |
+{% endfor %}
+{% else %}
+### §3.3 SOUP Register (IEC 62304:2006+A1:2015 §8.1.2)
+
+[TODO: List all SOUP (Software of Unknown Provenance) components. For each entry include:
+name, version, intended purpose, and confirmation that the known anomaly list has been reviewed.]
+{% endif %}
+
+{% else %}
+### §3.2 Manufacturing Information
+
+[TODO: Describe the manufacturing process, including:
+- Materials used and their specifications
+- Manufacturing steps and controls
+- Sterilisation method (if applicable) and validation references
+- Quality system certificates (ISO 13485:2016)]
+{% endif %}
+
+**Standards pointers for §3:**
+{% for sec in pointers if sec.section == "Annex II §3" %}{% for p in sec.pointers %}
+- **{{ p.standard_id }} {{ p.clause }}** — {{ p.topic }}{% if p.note %} *({{ p.note }})*{% endif %}
+{% endfor %}{% endfor %}
+
+---
+
+## §4 General Safety and Performance Requirements (GSPR) Checklist (MDR Annex II §4, Annex I)
+
+> Complete the GSPR checklist table below. Each row corresponds to one MDR Annex I requirement.
+> For each requirement: mark applicability (Yes/No/N/A), reference the evidence document, and
+> record the harmonised standard(s) applied. See `checklist.md` for the auto-derived status overview.
+
+| Annex I Requirement | Applicable? | Evidence Document Reference | Harmonised Standard |
+| --- | --- | --- | --- |
+| §1 — General requirements: devices shall achieve intended performance | [TODO] | [TODO: ref] | ISO 14971:2019 §4-9 |
+| §2 — Risk management: benefit shall outweigh residual risks | [TODO] | [TODO: risk mgmt file ref] | ISO 14971:2019 §5-7 |
+| §3 — State of the art | [TODO] | [TODO: ref] | — |
+| §4 — Precautionary measures: known and foreseeable misuse | [TODO] | [TODO: ref] | IEC 62366-1:2015 §5.4 |
+| §5 — Durability and reliability | [TODO] | [TODO: ref] | — |
+| §6 — Transport and storage | [TODO] | [TODO: ref] | — |
+| §7 — Combination products (if applicable) | [TODO] | N/A | — |
+| §8 — Performance and ergonomic design | [TODO] | [TODO: ref] | IEC 62366-1:2015 §5 |
+| §9 — Chemical, physical, biological properties | {% if spec.software %}N/A (software){% else %}[TODO]{% endif %} | {% if spec.software %}N/A{% else %}[TODO: ref]{% endif %} | ISO 10993-1:2018 |
+| §10 — Infection and microbial contamination | {% if spec.software %}N/A (software){% else %}[TODO]{% endif %} | N/A | — |
+| §11 — Construction and environmental properties | [TODO] | [TODO: ref] | — |
+| §12 — Devices with measuring function | [TODO] | [TODO: ref] | — |
+| §13 — Protection against radiation | {% if spec.software %}N/A (software){% else %}[TODO]{% endif %} | N/A | — |
+| §14 — Active devices (general) | {% if spec.software %}Yes{% else %}[TODO]{% endif %} | [TODO: ref] | IEC 62304:2006+A1:2015 §5 |
+| §15 — Active implantable devices | N/A | N/A | — |
+| §16 — Connection to external energy source | [TODO] | [TODO: ref] | — |
+| §17 — Software devices (SaMD/MDSW) | {% if spec.software %}Yes{% else %}N/A{% endif %} | {% if spec.software %}[TODO: software V&V ref]{% else %}N/A{% endif %} | IEC 62304:2006+A1:2015; MDCG 2019-11; MDCG 2019-16 |
+| §18 — Active devices intended for therapy | [TODO] | [TODO: ref] | — |
+| §19 — Particular requirements for active implantable devices | N/A | N/A | — |
+| §20 — Protection against mechanical risks | {% if spec.software %}N/A (software){% else %}[TODO]{% endif %} | N/A | — |
+| §21 — Protection against thermal risks | {% if spec.software %}N/A (software){% else %}[TODO]{% endif %} | N/A | — |
+| §22 — Protection against risks from energies | [TODO] | [TODO: ref] | — |
+| §23 — Information supplied by the manufacturer | Yes | See §2 above | ISO 15223-1:2021 |
+
+**Standards pointers for §4:**
+{% for sec in pointers if sec.section == "Annex II §4" %}{% for p in sec.pointers %}
+- **{{ p.standard_id }} {{ p.clause }}** — {{ p.topic }}{% if p.note %} *({{ p.note }})*{% endif %}
+{% endfor %}{% endfor %}
+
+---
+
+## §5 Benefit-Risk Analysis and Risk Management File (MDR Annex II §5)
+
+> Reference: MDR Art. 10(2), Annex I §1-8, ISO 14971:2019
+
+[TODO: Attach or reference the ISO 14971:2019 risk management file. This section must demonstrate:
+1. Risk management plan (ISO 14971:2019 §4.4)
+2. Risk analysis — identification of characteristics related to safety (§4.3)
+3. Hazard identification and estimation of associated risks (§5-6)
+4. Risk evaluation and risk control measures (§7-8)
+5. Evaluation of residual risks (§9)
+6. Benefit-risk determination: overall residual risks acceptable in light of clinical benefits
+7. Risk management review and sign-off
+
+Risk management file reference: [TODO: Document ID and version]]
+
+{% if spec.clinical_claims %}
+### Clinical Claims Requiring Benefit Evidence
+
+{% for claim in spec.clinical_claims %}- {{ claim }}
+{% endfor %}
+
+[TODO: For each claim above, attach or reference the clinical evidence substantiating
+the claimed benefit used in the benefit-risk analysis.]
+{% endif %}
+
+**Standards pointers for §5:**
+{% for sec in pointers if sec.section == "Annex II §5" %}{% for p in sec.pointers %}
+- **{{ p.standard_id }} {{ p.clause }}** — {{ p.topic }}{% if p.note %} *({{ p.note }})*{% endif %}
+{% endfor %}{% endfor %}
+
+---
+
+## §6 Product Verification and Validation (MDR Annex II §6)
+
+[TODO: Provide or reference:
+- Verification protocols and results (does the product meet design outputs?)
+- Validation protocols and results (does the product meet user needs and intended use?)
+- For SaMD: software test documentation per IEC 62304:2006+A1:2015 §5.6-5.8
+- For usability: summative evaluation report per IEC 62366-1:2015 §5.10]
+
+**Standards pointers for §6:**
+{% for sec in pointers if sec.section == "Annex II §6" %}{% for p in sec.pointers %}
+- **{{ p.standard_id }} {{ p.clause }}** — {{ p.topic }}{% if p.note %} *({{ p.note }})*{% endif %}
+{% endfor %}{% endfor %}
+
+### §6.1 Clinical Evaluation (MDR Annex II §6.1, MDR Art. 61)
+
+[TODO: Attach or reference the Clinical Evaluation Report (CER). The CER must cover:
+1. Identification of applicable GSPRs requiring clinical data (MDR Annex I §1, §8)
+2. Clinical data sources: literature search protocol and results, clinical investigation data (if any)
+3. Equivalence assessment (if claiming equivalence: technical, biological, clinical equivalence per MDCG 2020-13)
+4. Clinical evaluation of safety and performance
+5. Residual risks and uncertainties requiring PMCF
+
+CER reference: [TODO: Document ID and version]]
+
+**Standards pointers for §6.1:**
+{% for sec in pointers if sec.section == "Annex II §6.1" %}{% for p in sec.pointers %}
+- **{{ p.standard_id }} {{ p.clause }}** — {{ p.topic }}{% if p.note %} *({{ p.note }})*{% endif %}
+{% endfor %}{% endfor %}
+
+---
+
+## §7 Post-Market Surveillance Documentation (see Annex III)
+
+See `annex-III.md` for the PMS plan and PMCF plan.
+
+---
+
+{% if spec.software %}
+## Appendix A: Software Lifecycle File (IEC 62304:2006+A1:2015)
+
+**IEC 62304 Safety Class:** {{ spec.lifecycle.iec62304_safety_class.value if spec.lifecycle else '[TODO]' }}
+
+[TODO: Reference or attach:
+- Software development plan (§5.1)
+- Software requirements specification (§5.2)
+- Software architecture document (§5.3)
+- Software unit design, implementation, and unit test records (§5.4-5.5)
+- Software integration test records (§5.6)
+- Software system test records (§5.7)
+- Software release records (§5.8)
+- Problem resolution process records (§9)]
+
+### SOUP Register Summary
+
+{% if spec.soup_register %}
+| SOUP | Version | Safety-Critical Purpose | Anomaly List |
+| --- | --- | --- | --- |
+{% for s in spec.soup_register %}| {{ s.name }} | {{ s.version }} | {{ s.purpose }} | {% if s.anomaly_list_reviewed %}Reviewed{% else %}[TODO: review]{% endif %} |
+{% endfor %}
+{% else %}
+[TODO: Complete SOUP register in device spec (soup_register field) and regenerate.]
+{% endif %}
+
+**Standards pointers:**
+{% for sec in pointers if sec.section == "IEC 62304 Software Lifecycle" %}{% for p in sec.pointers %}
+- **{{ p.standard_id }} {{ p.clause }}** — {{ p.topic }}{% if p.note %} *({{ p.note }})*{% endif %}
+{% endfor %}{% endfor %}
+
+---
+
+## Appendix B: Usability Engineering File (IEC 62366-1:2015+A1:2020)
+{% else %}
+## Appendix A: Usability Engineering File (IEC 62366-1:2015+A1:2020)
+{% endif %}
+
+[TODO: Reference or attach:
+- Intended use specification (§5.1) — see §1.1 above
+- User profile and use environment specification (§5.1)
+- Use-related risk analysis (§5.4)
+- Formative evaluation records (§5.7-5.9)
+- Summative usability evaluation protocol and report (§5.10)]
+
+**Standards pointers:**
+{% for sec in pointers if sec.section == "IEC 62366 Usability" %}{% for p in sec.pointers %}
+- **{{ p.standard_id }} {{ p.clause }}** — {{ p.topic }}{% if p.note %} *({{ p.note }})*{% endif %}
+{% endfor %}{% endfor %}
+
+---
+
+*End of Annex II Technical Documentation skeleton for {{ spec.name }}.*
+*Generated by mdr-tech-file-gen v{{ tool_version }} on {{ generated_at }}.*
+*Review and complete all [TODO] items before Notified Body submission.*

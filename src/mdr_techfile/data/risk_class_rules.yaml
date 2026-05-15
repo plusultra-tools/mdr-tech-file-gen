@@ -1,0 +1,208 @@
+# risk_class_rules.yaml
+#
+# Summary of MDR Annex VIII classification rules.
+#
+# Source: Regulation (EU) 2017/745, Annex VIII (Classification Rules).
+# Official Journal: OJ L 117, 5.5.2017, pp. 175-197.
+# EUR-Lex permalink (public domain): https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745
+#
+# IMPORTANT: The rule summaries below are paraphrased descriptions.
+# They are NOT verbatim copies of the Regulation text. The verbatim text
+# is available at the EUR-Lex link above (public domain OJ publication).
+
+rules:
+  - rule: "Rule 1"
+    class: "I"
+    summary: >
+      Non-invasive devices that contact only intact skin, or that are not
+      in contact with the patient; or devices intended for examination of
+      the external body surface.
+    verbatim_source: "MDR Annex VIII Rule 1"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 2"
+    class: "I or IIa"
+    summary: >
+      Non-invasive devices intended for channelling or storing blood,
+      body liquids, or tissues. Class IIa if intended for use with active
+      devices in Class IIa or higher.
+    verbatim_source: "MDR Annex VIII Rule 2"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 3"
+    class: "IIa or IIb"
+    summary: >
+      Non-invasive devices that modify the biological or chemical composition
+      of human tissues or cells, blood, other body liquids, or other liquids
+      intended for implantation or administration into the body.
+    verbatim_source: "MDR Annex VIII Rule 3"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 4"
+    class: "IIb or III"
+    summary: >
+      Non-invasive devices that come into contact with injured skin or mucous
+      membranes. Class IIb if intended to manage the microenvironment of a
+      wound; Class III if intended for wounds requiring surgical closure.
+    verbatim_source: "MDR Annex VIII Rule 4"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 5"
+    class: "IIa"
+    summary: >
+      Invasive devices with respect to body orifices (other than surgically
+      invasive) intended for short-term use.
+    verbatim_source: "MDR Annex VIII Rule 5"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 6"
+    class: "IIa or IIb"
+    summary: >
+      Surgically invasive devices intended for transient use.
+    verbatim_source: "MDR Annex VIII Rule 6"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 7"
+    class: "IIb"
+    summary: >
+      Surgically invasive devices intended for short-term use, with specific
+      exceptions for Class III sub-categories.
+    verbatim_source: "MDR Annex VIII Rule 7"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 8"
+    class: "IIb or III"
+    summary: >
+      Implantable and long-term surgically invasive devices. Class III for
+      devices in direct contact with heart, central circulatory or central
+      nervous system, or certain other critical anatomical sites.
+    verbatim_source: "MDR Annex VIII Rule 8"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 9"
+    class: "IIa or IIb"
+    summary: >
+      Active therapeutic devices intended to administer or exchange energy.
+      Class IIb if potentially hazardous due to the nature of energy
+      administered.
+    verbatim_source: "MDR Annex VIII Rule 9"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 10"
+    class: "IIa"
+    summary: >
+      Active devices intended for diagnosis and monitoring; includes active
+      devices intended to supply information used in diagnosis or monitoring
+      of vital physiological processes.
+    verbatim_source: "MDR Annex VIII Rule 10"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 11"
+    class: "IIa, IIb, or III"
+    summary: >
+      Software intended to provide information used to make decisions with
+      diagnosis or therapeutic purposes. Class IIa if decisions may cause
+      serious deterioration or surgical intervention; Class IIb if decisions
+      may cause death or irreversible deterioration; Class III if intended
+      for time-critical decisions for diagnosis/treatment of life-threatening
+      situations. All other software in Class I.
+    verbatim_source: "MDR Annex VIII Rule 11"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+    note: "Primary rule for SaMD/MDSW classification."
+
+  - rule: "Rule 12"
+    class: "I"
+    summary: >
+      All other active devices (catch-all for active devices not covered
+      by Rules 9-11).
+    verbatim_source: "MDR Annex VIII Rule 12"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 13"
+    class: "IIb or III"
+    summary: >
+      Devices incorporating a substance that, if used separately, can be
+      considered a medicinal product (including human blood derivatives).
+    verbatim_source: "MDR Annex VIII Rule 13"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 14"
+    class: "III"
+    summary: >
+      Devices used in contraception or prevention of transmission of
+      sexually transmitted diseases.
+    verbatim_source: "MDR Annex VIII Rule 14"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 15"
+    class: "III"
+    summary: >
+      Devices specifically intended to be used for disinfecting, cleaning,
+      rinsing, or hydrating contact lenses.
+    verbatim_source: "MDR Annex VIII Rule 15"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 16"
+    class: "IIa or IIb"
+    summary: >
+      Devices specifically intended for recording of X-ray diagnostic images;
+      or devices intended for image processing (Class IIa for diagnostic
+      imaging, Class IIb for radiotherapy systems).
+    verbatim_source: "MDR Annex VIII Rule 16"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 17"
+    class: "III"
+    summary: >
+      Devices manufactured utilising tissues or cells of human or animal origin
+      or their derivatives, unless such tissues or cells are non-viable.
+    verbatim_source: "MDR Annex VIII Rule 17"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 18"
+    class: "III"
+    summary: >
+      Blood bags.
+    verbatim_source: "MDR Annex VIII Rule 18"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 19"
+    class: "IIb or III"
+    summary: >
+      Active implantable devices and accessories. Class III for those intended
+      to be totally or mainly absorbed by the body.
+    verbatim_source: "MDR Annex VIII Rule 19"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 20"
+    class: "IIb or III"
+    summary: >
+      Devices used to administer medicines; Class III if the administration
+      is by an implanted route or if the device and medicinal product form
+      an integral product.
+    verbatim_source: "MDR Annex VIII Rule 20"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 21"
+    class: "III"
+    summary: >
+      Devices intended to be used in direct contact with the heart, central
+      circulatory or central nervous system.
+    verbatim_source: "MDR Annex VIII Rule 21"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+
+  - rule: "Rule 22"
+    class: "IIa"
+    summary: >
+      Closed-loop systems intended to automatically control the therapy of a
+      medical device, based on information provided by the device itself,
+      limited to non-life-threatening therapeutic purposes.
+    verbatim_source: "MDR Annex VIII Rule 22"
+    eur_lex_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745#d1e32-175-1"
+    note: "Applies to standalone software implementing closed-loop control."
+
+note: >
+  This file summarises the MDR Annex VIII classification rules in paraphrased form.
+  For authoritative classification, consult the verbatim rule text at the EUR-Lex
+  URL above and relevant MDCG guidance documents (MDCG 2021-24).
+  Classification should be confirmed by a qualified regulatory professional.

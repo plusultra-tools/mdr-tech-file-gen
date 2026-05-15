@@ -1,0 +1,52 @@
+{#
+  standards-matrix.md.j2 — Standards citation matrix.
+
+  Variables injected by annex2.py / renderer:
+    spec         — DeviceSpec instance
+    all_pointers — list[SectionPointers] (full set, pre-filtered for device)
+    generated_at — ISO datetime string
+    tool_version — str
+
+  No verbatim ISO/IEC text. Only standard IDs and clause numbers.
+#}
+# Standards and Harmonised Standards Matrix
+## {{ spec.name }} (Class {{ spec.risk_class.value }})
+
+**Device ID:** {{ spec.id }}
+**Generated:** {{ generated_at }} by mdr-tech-file-gen v{{ tool_version }}
+
+> This matrix maps each MDR Annex II section to the harmonised standards and guidance
+> documents relevant to it, filtered for **Class {{ spec.risk_class.value }}**
+> / **software={{ spec.software }}** device characteristics.
+>
+> **Important:** This matrix lists citation pointers only. No verbatim text from
+> ISO/IEC standards is reproduced here. Obtain the full standard text from ISO, IEC,
+> or your national standards body. MDCG guidance documents are available free from:
+> https://health.ec.europa.eu/medical-devices-sector/new-regulations/guidance-mdcg-endorsed-documents-and-other-guidance_en
+
+| MDR Section | Section Title | Standard / Guidance | Clause | Topic | Applicability |
+| --- | --- | --- | --- | --- | --- |
+{% for sec in all_pointers %}{% for p in sec.pointers %}| {{ sec.section }} | {{ sec.title }} | {{ p.standard_id }} | {{ p.clause }} | {{ p.topic }} | {{ p.applicability }} |
+{% endfor %}{% endfor %}
+
+---
+
+## Quick Reference: Core Harmonised Standards for Class {{ spec.risk_class.value }} Devices
+
+| Standard | Title (abbreviated) | Scope |
+| --- | --- | --- |
+| ISO 14971:2019 | Medical devices — Application of risk management | Risk management for all medical devices |
+| ISO 13485:2016 | Medical devices — Quality management systems | QMS requirements for manufacturers |
+| IEC 62366-1:2015+A1:2020 | Medical devices — Usability engineering | Usability process for all medical devices |
+{% if spec.software %}| IEC 62304:2006+A1:2015 | Medical device software — Software lifecycle processes | SaMD/MDSW development lifecycle |
+| MDCG 2019-11 | Guidance on qualification and classification of MDSW | SaMD qualification/classification |
+| MDCG 2019-16 | Guidance on cybersecurity for MDSW | Cybersecurity requirements for SaMD |
+{% endif %}{% if spec.risk_class.value in ['IIb', 'III'] %}| ISO 14155:2020 | Clinical investigation of medical devices | Clinical investigation GCP |
+{% endif %}| MDCG 2020-6 rev.2 | Guidance on clinical evaluation | CER structure and methodology |
+| MDCG 2020-7 | Guidance on PMCF | PMCF plan and evaluation report |
+| MDCG 2022-21 | Guidance on PMS plan | PMS plan minimum content |
+
+---
+
+*This matrix is auto-generated and may not be exhaustive for your specific device.*
+*Consult a qualified regulatory professional to confirm the applicable standard set.*

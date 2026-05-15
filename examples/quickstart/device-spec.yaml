@@ -1,0 +1,80 @@
+# device-spec.yaml
+# Example device specification: SmartGlucose Predictor v1.0
+#
+# A fictitious Class IIa SaMD clinical decision support device.
+# Use this file to test: mdr-techfile scaffold --spec device-spec.yaml --out techfile/
+
+id: "SGP-001"
+name: "SmartGlucose Predictor v1.0"
+manufacturer: "GlucoTech GmbH"
+version: "1.0"
+
+intended_use: >
+  Intended to predict blood glucose level trends in adults (≥18 years) with
+  Type 1 or Type 2 diabetes mellitus, using continuous glucose monitor (CGM)
+  readings and patient-reported meal data. The software provides predictive
+  alerts to help the patient and their supervising healthcare professional take
+  proactive action to avoid hyperglycaemia and hypoglycaemia. Not intended for
+  acute hypoglycaemia management or autonomous insulin dosing decisions without
+  HCP oversight.
+
+intended_users:
+  - "healthcare professional"
+  - "layperson (patient under HCP supervision)"
+
+intended_environments:
+  - "home care"
+  - "ambulatory care"
+  - "primary care clinic"
+
+risk_class: "IIa"
+classification_rules_applied:
+  - "Rule 11"
+  # MDR Annex VIII Rule 11: software intended to provide information for diagnosis
+  # or therapeutic purposes whose decisions may cause serious deterioration of
+  # a person's state of health → Class IIa.
+
+software: true
+
+lifecycle:
+  iec62304_safety_class: "B"
+  version_control_system: "git 2.44"
+  change_control_sop: "SOP-CC-001 v2.0"
+
+soup_register:
+  - name: "numpy"
+    version: "1.26.4"
+    purpose: "Numerical array operations for glucose trend signal processing."
+    anomaly_list_reviewed: true
+
+  - name: "scikit-learn"
+    version: "1.4.1"
+    purpose: "Machine learning model training and inference for trend prediction."
+    anomaly_list_reviewed: false  # TODO: review known anomaly list before release
+
+  - name: "pandas"
+    version: "2.2.1"
+    purpose: "Tabular data processing for CGM reading ingestion."
+    anomaly_list_reviewed: true
+
+  - name: "Flask"
+    version: "3.0.3"
+    purpose: "REST API layer for mobile-app integration."
+    anomaly_list_reviewed: false  # TODO: review
+
+contraindications:
+  - "Not for use in patients under 18 years of age (paediatric population not validated)."
+  - "Not validated for use during pregnancy."
+  - "Not a substitute for clinical blood glucose measurement by certified laboratory methods."
+  - "Do not use to make autonomous insulin dosing decisions without HCP consultation."
+
+clinical_claims:
+  - "Predicts blood glucose trends ≥30 minutes ahead with mean absolute relative difference (MARD) ≤15% in the target population."
+  - "Reduces time-in-hypoglycaemia by ≥20% versus standard CGM alone (clinical study reference: SGP-CL-001)."
+
+notified_body: "TÜV SÜD"
+
+# UDI fields — leave null until EUDAMED registration
+udi_di: null
+basic_udi_di: null
+eudamed_registration_id: null
