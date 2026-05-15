@@ -146,7 +146,9 @@ class TestScaffoldCommand:
         main(["scaffold", "--spec", str(spec_path), "--out", str(out_dir)])
         audit_text = (out_dir / "audit.sha256").read_text(encoding="utf-8")
         for line in audit_text.splitlines():
-            if not line.strip():
+            # Skip blank lines and '# tool_version: ...' / '# spec_sha256: ...'
+            # provenance header lines added by the audit chain.
+            if not line.strip() or line.startswith("#"):
                 continue
             digest, rel_name = line.split("  ", 1)
             file_path = out_dir / rel_name.strip()

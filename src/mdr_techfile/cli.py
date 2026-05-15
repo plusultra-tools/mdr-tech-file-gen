@@ -111,7 +111,23 @@ def _cmd_scaffold(args: argparse.Namespace) -> int:
         print(f"ERROR: {e}", file=sys.stderr)
         return 1
 
-    out = Path(args.out)
+    out = Path(args.out).resolve()
+    cwd = Path.cwd().resolve()
+    # Refuse to write outside the current working directory unless the user
+    # opts in via an absolute path. Relative `../` segments that escape the
+    # cwd are silently dangerous in CI contexts where the spec might be
+    # attacker-controlled.
+    if not args.out.startswith(("/", "\\")) and ":" not in args.out[:3]:
+        try:
+            out.relative_to(cwd)
+        except ValueError:
+            print(
+                f"ERROR: --out '{args.out}' resolves to '{out}', which escapes "
+                f"the current working directory '{cwd}'. Pass an absolute path "
+                f"if you really intended to write there.",
+                file=sys.stderr,
+            )
+            return 1
     out.mkdir(parents=True, exist_ok=True)
 
     written: list[Path] = []
@@ -145,7 +161,9 @@ def _cmd_scaffold(args: argparse.Namespace) -> int:
         print(f"  Wrote: {annex3_path}")
 
     if written:
-        audit_path = write_audit_chain(out, written)
+        audit_path = write_audit_chain(
+            out, written, tool_version=__version__, spec_path=Path(args.spec)
+        )
         print(f"  Wrote: {audit_path}")
 
     filled = sum(

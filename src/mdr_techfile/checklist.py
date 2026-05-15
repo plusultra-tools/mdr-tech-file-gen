@@ -204,7 +204,13 @@ def build_checklist(spec: DeviceSpec) -> list[ChecklistItem]:
             + (
                 "PSUR required for Class IIa/IIb/III per MDR Art. 86."
                 if spec.risk_class != RiskClass.I
-                else "Annual summary safety and performance report for Class I per MDR Art. 85."
+                else (
+                    "Post-market surveillance report for Class I per MDR Art. 85: "
+                    "'a post-market surveillance report which summarises the results "
+                    "and conclusions of the analyses of the post-market surveillance "
+                    "data', updated when necessary and made available to authorities "
+                    "on request."
+                )
             )
         ),
     ))

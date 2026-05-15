@@ -58,13 +58,18 @@ class TestWriteAuditChain:
         assert audit_path.exists()
         assert audit_path.name == AUDIT_FILENAME
 
-    def test_audit_content_has_two_lines(self, tmp_path: Path) -> None:
+    def test_audit_content_has_two_hash_lines(self, tmp_path: Path) -> None:
         f1 = tmp_path / "a.md"
         f2 = tmp_path / "b.md"
         f1.write_text("aaa", encoding="utf-8")
         f2.write_text("bbb", encoding="utf-8")
         audit_path = write_audit_chain(tmp_path, [f1, f2])
-        lines = [ln for ln in audit_path.read_text(encoding="utf-8").splitlines() if ln.strip()]
+        # Hash lines are non-empty and do NOT start with the '#' provenance marker.
+        lines = [
+            ln
+            for ln in audit_path.read_text(encoding="utf-8").splitlines()
+            if ln.strip() and not ln.startswith("#")
+        ]
         assert len(lines) == 2
 
     def test_audit_line_format(self, tmp_path: Path) -> None:
@@ -72,8 +77,14 @@ class TestWriteAuditChain:
         content = "test content"
         f.write_text(content, encoding="utf-8")
         audit_path = write_audit_chain(tmp_path, [f])
-        line = audit_path.read_text(encoding="utf-8").strip()
-        parts = line.split("  ", 1)
+        # Skip the '# tool_version: ...' header line.
+        hash_lines = [
+            ln
+            for ln in audit_path.read_text(encoding="utf-8").splitlines()
+            if ln.strip() and not ln.startswith("#")
+        ]
+        assert len(hash_lines) == 1
+        parts = hash_lines[0].split("  ", 1)
         assert len(parts) == 2
         assert len(parts[0]) == 64  # SHA-256 hex
         assert "doc.md" in parts[1]
@@ -83,11 +94,36 @@ class TestWriteAuditChain:
         f = tmp_path / "out.md"
         f.write_text(content, encoding="utf-8")
         write_audit_chain(tmp_path, [f])
-        audit_line = (tmp_path / AUDIT_FILENAME).read_text(encoding="utf-8").strip()
-        recorded_hash = audit_line.split("  ")[0]
+        hash_lines = [
+            ln
+            for ln in (tmp_path / AUDIT_FILENAME).read_text(encoding="utf-8").splitlines()
+            if ln.strip() and not ln.startswith("#")
+        ]
+        recorded_hash = hash_lines[0].split("  ")[0]
         assert recorded_hash == hashlib.sha256(content.encode("utf-8")).hexdigest()
 
-    def test_empty_file_list(self, tmp_path: Path) -> None:
+    def test_empty_file_list_emits_header_only(self, tmp_path: Path) -> None:
         audit_path = write_audit_chain(tmp_path, [])
         assert audit_path.exists()
-        assert audit_path.read_text(encoding="utf-8") == "\n"
+        text = audit_path.read_text(encoding="utf-8")
+        # No hash lines, but the provenance header is still present.
+        hash_lines = [ln for ln in text.splitlines() if ln.strip() and not ln.startswith("#")]
+        assert hash_lines == []
+        assert "tool_version" in text
+
+    def test_provenance_header_includes_tool_version(self, tmp_path: Path) -> None:
+        f = tmp_path / "x.md"
+        f.write_text("xx", encoding="utf-8")
+        write_audit_chain(tmp_path, [f], tool_version="9.9.9")
+        text = (tmp_path / AUDIT_FILENAME).read_text(encoding="utf-8")
+        assert "# tool_version: mdr-tech-file-gen 9.9.9" in text
+
+    def test_provenance_header_includes_spec_sha(self, tmp_path: Path) -> None:
+        f = tmp_path / "y.md"
+        f.write_text("yy", encoding="utf-8")
+        spec = tmp_path / "device.yaml"
+        spec.write_text("id: X\n", encoding="utf-8")
+        write_audit_chain(tmp_path, [f], spec_path=spec)
+        text = (tmp_path / AUDIT_FILENAME).read_text(encoding="utf-8")
+        assert "# spec_sha256:" in text
+        assert "device.yaml" in text

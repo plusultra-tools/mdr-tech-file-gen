@@ -101,10 +101,11 @@ class DeviceSpec(BaseModel):
         description="MDR risk class per Annex VIII: I, IIa, IIb, or III."
     )
     classification_rules_applied: list[str] = Field(
+        min_length=1,
         description=(
             "MDR Annex VIII classification rules that justify the risk class "
-            "(e.g. ['Rule 11', 'Rule 22'])."
-        )
+            "(e.g. ['Rule 11', 'Rule 22']). At least one rule must be provided."
+        ),
     )
     software: bool = Field(
         default=False,
@@ -158,6 +159,13 @@ class DeviceSpec(BaseModel):
         return v
 
 
+# Hard cap on the raw YAML size we are willing to read. Defends against
+# billion-laughs anchors, runaway anchors / aliases, and accidental
+# multi-gigabyte input files in CI pipelines. 1 MiB is ~10x the size of
+# any realistic device.yaml we have seen.
+MAX_SPEC_BYTES = 1_000_000
+
+
 def load_spec(path: str | Path) -> DeviceSpec:
     """Load and validate a device specification YAML file.
 
@@ -169,11 +177,19 @@ def load_spec(path: str | Path) -> DeviceSpec:
 
     Raises:
         FileNotFoundError: If *path* does not exist.
-        ValueError: If the YAML is missing required fields or fails Pydantic validation.
+        ValueError: If the YAML is missing required fields, exceeds
+            :data:`MAX_SPEC_BYTES`, or fails Pydantic validation.
     """
     p = Path(path)
     if not p.exists():
         raise FileNotFoundError(f"Device spec not found: {p}")
+    size = p.stat().st_size
+    if size > MAX_SPEC_BYTES:
+        raise ValueError(
+            f"Device spec is too large: {size} bytes > {MAX_SPEC_BYTES} byte cap. "
+            "Refusing to parse to avoid YAML-bomb / OOM risk. "
+            "Split or trim the spec, or raise MAX_SPEC_BYTES if you really need to."
+        )
     with p.open(encoding="utf-8") as fh:
         raw = yaml.safe_load(fh)
     if not isinstance(raw, dict):
