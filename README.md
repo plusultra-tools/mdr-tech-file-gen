@@ -1,5 +1,10 @@
 # mdr-tech-file-gen
 
+[![tests](https://github.com/plusultra-tools/mdr-tech-file-gen/actions/workflows/test.yml/badge.svg)](https://github.com/plusultra-tools/mdr-tech-file-gen/actions/workflows/test.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![python: 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![status: v0.1 pre-release](https://img.shields.io/badge/status-v0.1%20pre--release-orange.svg)](CHANGELOG.md)
+
 **YAML device spec → CE-MDR Annex II/III technical file scaffolding in one command.** Pure-Python CLI that reads a typed `device.yaml`, validates it against a Pydantic schema, and renders an Annex II/III technical-file skeleton — an engineering team starting point for MDR Annex II/III scaffolding, NOT a finished submission. Most evidence sections ship as `[TODO]` placeholders the manufacturer must complete.
 
 ```bash

@@ -4,7 +4,10 @@ Source: Official Journal of the European Union, OJ L 117, 5.5.2017, pp. 1–175.
 EUR-Lex permalink: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017R0745
 
 All article and annex headings below are verbatim from the published Regulation.
-The full text is freely available at the EUR-Lex URL above (public domain EU law).
+The full text is freely available at the EUR-Lex URL above and is reusable under
+Commission Decision 2011/833/EU (re-use of Commission documents) with attribution
+to the European Union as the source. EU institutional content is not "public
+domain" in the US-copyright sense — this is a re-use licence, not abandonment.
 
 ---
 
@@ -109,4 +112,6 @@ The full text is freely available at the EUR-Lex URL above (public domain EU law
 
 *All verbatim citations in this document are from Regulation (EU) 2017/745,
 published in the Official Journal of the European Union (OJ L 117, 5.5.2017).
-EU law published in the Official Journal is in the public domain.*
+EU institutional content is reusable under Commission Decision 2011/833/EU
+with attribution to the European Union as the source — not "public domain"
+in the US-copyright sense.*

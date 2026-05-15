@@ -1,0 +1,31 @@
+# Dependabot configuration for mdr-tech-file-gen.
+# Red-team iter1 flagged disabled dependabot as a poor optic for a tool
+# aimed at regulated industries. This enables weekly version + security
+# updates for both the Python deps and the GitHub Actions used in CI.
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "ci(deps)"
+      include: "scope"

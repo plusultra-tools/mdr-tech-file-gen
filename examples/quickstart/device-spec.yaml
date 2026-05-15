@@ -1,6 +1,18 @@
-# device-spec.yaml
-# Example device specification: SmartGlucose Predictor v1.0
+# =============================================================================
+# FICTIONAL EXAMPLE — DO NOT USE FOR ANY REGULATORY SUBMISSION
+# =============================================================================
+# The device, manufacturer, Notified Body and identifiers below are entirely
+# made up for demonstration purposes. "GlucoTech GmbH" does not exist. The
+# SmartGlucose Predictor v1.0 is not a real product. The "TÜV SÜD" entry is
+# illustrative — selection of an actual Notified Body is the manufacturer's
+# decision. Copying this file unmodified into a real submission would be
+# fraudulent and would expose the user to MDR Article 7 (misleading claims)
+# liability.
 #
+# This banner is intentionally verbose so it survives partial copy-paste.
+# =============================================================================
+#
+# Example device specification: SmartGlucose Predictor v1.0
 # A fictitious Class IIa SaMD clinical decision support device.
 # Use this file to test: mdr-techfile scaffold --spec device-spec.yaml --out techfile/
 
