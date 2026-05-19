@@ -36,8 +36,8 @@ dependencies = [
 dev = ["pytest>=7", "pytest-cov>=4", "build", "twine", "ruff>=0.4", "mypy>=1.10"]
 
 [project.urls]
-Homepage = "https://github.com/plusultra/mdr-tech-file-gen"
-Issues = "https://github.com/plusultra/mdr-tech-file-gen/issues"
+Homepage = "https://github.com/plusultra-tools/mdr-tech-file-gen"
+Issues = "https://github.com/plusultra-tools/mdr-tech-file-gen/issues"
 
 [project.scripts]
 mdr-techfile = "mdr_techfile.cli:main"
